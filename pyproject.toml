@@ -7,6 +7,9 @@ authors = [{ name = "Benjamin Vogel", email = "ben10vogel@gmail.com" }]
 requires-python = ">=3.12"
 dependencies = ["httpx>=0.28.1", "rich>=14.1.0"]
 
+[project.optional-dependencies]
+build = ["uv ~= 0.7.11"]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -21,6 +24,11 @@ dev = [
 
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
+build_command = """
+    uv lock --upgrade-package "$PACKAGE_NAME"
+    git add uv.lock
+    uv build
+"""
 
 [tool.semantic_release.changelog]
 # Recommended patterns for conventional commits parser that is scope aware
@@ -33,9 +41,3 @@ exclude_commit_patterns = [
     '''build\((?!deps\): .+)''',
     '''Initial [Cc]ommit.*''',
 ]
-
-[tool.semantic_release.branches.alpha]
-# Matches branches with the prefixes 'feat/', 'fix/', or 'perf/'.
-match = "^(feat|fix|perf)/.+"
-prerelease = true
-prerelease_token = "alpha"
