@@ -6,9 +6,10 @@ from pathlib import Path
 # TODO: ADD OAUTH2 SUPPORT
 class Session:
     _extension_url = "/sessions"
-    session_id: str = ""
+    _session_id: str = ""
     _remember_token: str = ""
     _remember_token_file: Path = Path("~/.tastyworks/remember_token.txt").expanduser()
+    _client: httpx.Client
 
     def __init__(
         self,
@@ -17,13 +18,12 @@ class Session:
         remember_me: bool = True,
         base_url: str = "https://api.tastyworks.com",
     ):
-        self.username = username
-        self.password = password
-        self.remember_me = remember_me
-        self.session_id = ""
+        self._username = username
+        self._password = password
+        self._remember_me = remember_me
+        self._session_id = ""
         self._remember_token = ""
-        self.base_url = base_url
-        self._full_url = base_url + self._extension_url
+        self._base_url = base_url
 
     @classmethod
     def from_remember_token(
@@ -48,22 +48,24 @@ class Session:
         if self._remember_token is not None:
             # Default to try to use remember token over password for safety
             payload = {
-                "login": self.username,
+                "login": self._username,
                 "remember-token": self._remember_token,
-                "remember-me": self.remember_me,
+                "remember-me": self._remember_me,
             }
         else:
             # Fallback to password if no remember token is provided
             payload = {
-                "login": self.username,
-                "password": self.password,
-                "remember-me": self.remember_me,
+                "login": self._username,
+                "password": self._password,
+                "remember-me": self._remember_me,
             }
-        response = httpx.post(self._full_url, json=payload)
+        response = httpx.post(self._base_url + self._extension_url, json=payload)
         if response.status_code == 201:
             data = response.json()["data"]
-            self.session_id = data["session-token"]
+            self._session_id = data["session-token"]
             self._remember_token = data["remember-token"]
+            auth_headers = {"Authorization": self._session_id}
+            self._client = httpx.Client(base_url=self._base_url, headers=auth_headers)
             return True
         else:
             error_code = response.status_code
@@ -75,9 +77,9 @@ class Session:
 
 
         Returns:
-            bool: _description_
+            bool: Is the session logged in?
         """
-        return self.session_id is not None
+        return self._session_id != ""
 
     def dump_remember_token(self, file_out: Path):
         """Dumps the remember token to a file.
@@ -95,8 +97,11 @@ class Session:
         """
         Log out of the Tastyworks API and invalidate the session token. This will also delete the remember token if it exists, as deleting a session invalidates all generated tokens.
         """
-        headers = {"Authorization": self.session_id}
-        response = httpx.delete(self._full_url, headers=headers)
+        if not self.is_logged_in():
+            return True  # Already logged out
+
+        response = self._client.delete(self._extension_url)
+        self._client.close()
         if response.status_code == 204:  # No Content
             # Delete the remember token if it exists
             if (
@@ -109,6 +114,12 @@ class Session:
             error_code = response.status_code
             error_message = response.json()["error"]["message"]
             raise translate_error_code(error_code, error_message)
+
+    @property
+    def client(self) -> httpx.Client:
+        if not self.is_logged_in():
+            self.login()
+        return self._client
 
     def __open__(self):
         """Open the session."""

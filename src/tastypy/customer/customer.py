@@ -16,23 +16,21 @@ from .suitability import Suitability
 
 class Customer:
     _me_url = "/customers/me"
-    _active_session: Session
-    _auth_header: dict[str, str] = {"Authorization": ""}
+    _session_client: httpx.Client
     _accounts: list[Account] = []
+    _active_session: Session
 
     def __init__(self, active_session: Session):
         if not active_session.is_logged_in():
             raise ValueError("Session is not logged in.")
-        self._auth_header["Authorization"] = f"{active_session.session_id}"
+        self._session_client = active_session.client
         self._active_session = active_session
 
     def sync(self):
         """
         Sync the customer data with the Tastyworks API.
         """
-        response = httpx.get(
-            f"{self._active_session.base_url}{self._me_url}", headers=self._auth_header
-        )
+        response = self._session_client.get(self._me_url)
         if response.status_code != 200:
             error_code = response.status_code
             error_message = response.json()["error"]["message"]
@@ -45,10 +43,7 @@ class Customer:
         self.sync()
 
         # If we can get our customer data, it's time we get our accounts
-        response = httpx.get(
-            f"{self._active_session.base_url}{self._me_url}/accounts",
-            headers=self._auth_header,
-        )
+        response = self._session_client.get(f"{self._me_url}/accounts")
         if response.status_code == 200:
             accounts = response.json()["data"]["items"]
             for account in accounts:
