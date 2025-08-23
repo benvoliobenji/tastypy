@@ -8,6 +8,7 @@ from rich.table import Table
 from ..errors import translate_error_code
 from ..session import Session
 from .trading_status import TradingStatus
+from .balance_snapshot import BalanceSnapshots, BalanceSnapshot
 
 
 class Account:
@@ -15,6 +16,7 @@ class Account:
     _session_client: httpx.Client
     _active_session: Session
     _trading_status: TradingStatus
+    _todays_balance_snapshot: BalanceSnapshot
 
     def __init__(self, active_session: Session, customer_id: str, account_number: str):
         if not active_session.is_logged_in():
@@ -44,6 +46,11 @@ class Account:
         """
         self.sync()
         self.trading_status.sync()
+
+        # Fetch only today's balance snapshot
+        balance_snapshots = BalanceSnapshots(self.account_number, self._active_session)
+        balance_snapshots.sync()
+        self._todays_balance_snapshot = balance_snapshots.snapshot_data[0]
 
     @property
     def account_number(self) -> str:
@@ -165,6 +172,7 @@ class Account:
     def suitable_options_level(self) -> str:
         return self._account_json.get("suitable-options-level", "")
 
+    # Outside API bound (new API calls)
     @property
     def trading_status(self) -> TradingStatus:
         if not self.account_number:
@@ -174,6 +182,14 @@ class Account:
                 self.account_number, self._active_session
             )
         return self._trading_status
+
+    @property
+    def todays_balance_snapshot(self) -> BalanceSnapshot:
+        if not self.account_number:
+            raise ValueError("Account number is not set.")
+        if not hasattr(self, "_todays_balance_snapshot"):
+            raise ValueError("Account balance snapshots have not been loaded.")
+        return self._todays_balance_snapshot
 
     def pretty_print(self) -> None:
         """Pretty print all account data in a nicely formatted table."""
