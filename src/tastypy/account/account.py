@@ -10,28 +10,25 @@ from ..session import Session
 
 
 class Account:
-    _base_account_url = "/customers/me/accounts/"
+    _account_url = ""
     _session_client: httpx.Client
     _active_session: Session
-    _account_number: str = ""
 
-    def __init__(self, active_session: Session, account_number: str):
+    def __init__(self, active_session: Session, customer_id: str, account_number: str):
         if not active_session.is_logged_in():
             raise ValueError("Session is not logged in.")
         elif not account_number:
             raise ValueError("Account number is required.")
-        self._account_number = account_number
         self._active_session = active_session
         self._session_client = active_session.client
+        self._account_url = f"/customers/{customer_id}/accounts/{account_number}"
 
     def sync(self):
         """
         Sync the account data with the Tastyworks API and store raw JSON responses.
         """
         # Account details
-        response = self._session_client.get(
-            f"{self._base_account_url}{self.account_number}"
-        )
+        response = self._session_client.get(self._account_url)
         if response.status_code != 200:
             error_code = response.status_code
             error_message = response.json()["error"]["message"]
@@ -48,7 +45,7 @@ class Account:
 
     @property
     def account_number(self) -> str:
-        return self._account_number
+        return self._account_json.get("account-number", "")
 
     @property
     def account_type_name(self) -> str:

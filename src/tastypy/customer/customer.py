@@ -53,10 +53,9 @@ class Customer:
                     continue
 
                 # If not, create a new Account instance, synchronize, and append it to the list
-                new_account = Account(self._active_session, account_number)
+                new_account = Account(self._active_session, self.id, account_number)
                 new_account.deep_sync()
                 self.accounts.append(new_account)
-                print(f"Account {account_number} synchronized.")
         else:
             error_code = response.status_code
             error_message = response.json()["error"]["message"]
