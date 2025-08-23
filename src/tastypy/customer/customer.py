@@ -62,6 +62,10 @@ class Customer:
             raise translate_error_code(error_code, error_message)
 
     @property
+    def accounts(self) -> list[Account]:
+        return self._accounts
+
+    @property
     def id(self) -> str:
         return self._request_json_data.get("id", "")
 
@@ -536,7 +540,3 @@ class Customer:
             print("Linked Accounts: None")
 
         print(f"{'=' * 60}\n")
-
-    @property
-    def accounts(self) -> list[Account]:
-        return self._accounts

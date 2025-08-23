@@ -7,12 +7,14 @@ from rich.table import Table
 
 from ..errors import translate_error_code
 from ..session import Session
+from .trading_status import TradingStatus
 
 
 class Account:
     _account_url = ""
     _session_client: httpx.Client
     _active_session: Session
+    _trading_status: TradingStatus
 
     def __init__(self, active_session: Session, customer_id: str, account_number: str):
         if not active_session.is_logged_in():
@@ -41,7 +43,7 @@ class Account:
         Note that this will involve multiple API calls, and may take time to fully synchronize as data is fetched.
         """
         self.sync()
-        # TODO: Add additional account synchronization steps
+        self.trading_status.sync()
 
     @property
     def account_number(self) -> str:
@@ -162,6 +164,16 @@ class Account:
     @property
     def suitable_options_level(self) -> str:
         return self._account_json.get("suitable-options-level", "")
+
+    @property
+    def trading_status(self) -> TradingStatus:
+        if not self.account_number:
+            raise ValueError("Account number is not set.")
+        if not hasattr(self, "_trading_status"):
+            self._trading_status = TradingStatus(
+                self.account_number, self._active_session
+            )
+        return self._trading_status
 
     def pretty_print(self) -> None:
         """Pretty print all account data in a nicely formatted table."""
