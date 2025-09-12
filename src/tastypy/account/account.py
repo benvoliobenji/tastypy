@@ -9,6 +9,7 @@ from ..errors import translate_error_code
 from ..session import Session
 from .trading_status import TradingStatus
 from .balance import Balance
+from .positions import Positions
 
 
 class Account:
@@ -50,6 +51,9 @@ class Account:
         # Fetch only today's balance snapshot
         self._current_balance = Balance(self.account_number, self._active_session)
         self._current_balance.sync()
+
+        # Fetch positions
+        self.positions.sync()
 
     @property
     def account_number(self) -> str:
@@ -189,6 +193,14 @@ class Account:
         if not hasattr(self, "_current_balance"):
             raise ValueError("Account balance has not been loaded.")
         return self._current_balance
+
+    @property
+    def positions(self) -> Positions:
+        if not self.account_number:
+            raise ValueError("Account number is not set.")
+        if not hasattr(self, "_positions"):
+            self._positions = Positions(self.account_number, self._active_session)
+        return self._positions
 
     def pretty_print(self) -> None:
         """Pretty print all account data in a nicely formatted table."""
