@@ -2,6 +2,22 @@
 
 <!-- version list -->
 
+## v1.2.0 (2025-09-11)
+
+### Bug Fixes
+
+- **session**: Fix session login
+  ([`5168b70`](https://github.com/benvoliobenji/tastypy/commit/5168b70153c7874434b8ea8e9fc619e69d4809e1))
+
+### Features
+
+- **account**: Add balance endpoint
+  ([`b30b474`](https://github.com/benvoliobenji/tastypy/commit/b30b474bf826a81034a5ec1617b4d87b43cbaee5))
+
+- **account**: Add positions endpoint
+  ([`b60b4af`](https://github.com/benvoliobenji/tastypy/commit/b60b4afc38b18052ceae5f069f5c645964b28c8c))
+
+
 ## v1.1.0 (2025-08-22)
 
 ### Features
