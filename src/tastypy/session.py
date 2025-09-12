@@ -1,6 +1,7 @@
 import httpx
 from .errors import translate_error_code
 from pathlib import Path
+import importlib.metadata
 
 
 # TODO: ADD OAUTH2 SUPPORT
@@ -10,6 +11,8 @@ class Session:
     _remember_token: str = ""
     _remember_token_file: Path = Path("~/.tastyworks/remember_token.txt").expanduser()
     _client: httpx.Client
+    _version: str = importlib.metadata.version("tastypy")
+    _headers: dict = {"User-Agent": f"tastypy/{_version}"}
 
     def __init__(
         self,
@@ -45,7 +48,7 @@ class Session:
         """
         Log in to the Tastyworks API and retrieve session and remember tokens.
         """
-        if self._remember_token is not None:
+        if self._remember_token is not None and self._remember_token != "":
             # Default to try to use remember token over password for safety
             payload = {
                 "login": self._username,
@@ -59,12 +62,15 @@ class Session:
                 "password": self._password,
                 "remember-me": self._remember_me,
             }
-        response = httpx.post(self._base_url + self._extension_url, json=payload)
+        response = httpx.post(
+            self._base_url + self._extension_url, json=payload, headers=self._headers
+        )
         if response.status_code == 201:
             data = response.json()["data"]
             self._session_id = data["session-token"]
             self._remember_token = data["remember-token"]
             auth_headers = {"Authorization": self._session_id}
+            auth_headers.update(self._headers)
             self._client = httpx.Client(base_url=self._base_url, headers=auth_headers)
             return True
         else:
