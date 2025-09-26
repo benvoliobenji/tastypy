@@ -1,6 +1,6 @@
 from .equity_option import EquityOption
-from ...session import Session
-from ...errors import translate_error_code
+from ....session import Session
+from ....errors import translate_error_code
 import datetime
 import enum
 
