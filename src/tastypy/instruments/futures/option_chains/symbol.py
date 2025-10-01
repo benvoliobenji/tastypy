@@ -1,4 +1,4 @@
-from ..future_option import FutureOption
+from ..common.future_option import FutureOption
 from ....session import Session
 from ....errors import translate_error_code
 from rich.console import Console

@@ -1,7 +1,7 @@
 import datetime
 
-from ...tick_sizes import TickSizes
-from ...strikes import Strikes
+from ...common.tick_sizes import TickSizes
+from ...common.strikes import Strikes
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table

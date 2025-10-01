@@ -5,7 +5,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
-from ..tick_sizes import TickSizes
+from ...common.tick_sizes import TickSizes
 
 
 class Lendability(enum.Enum):

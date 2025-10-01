@@ -1,6 +1,6 @@
 from ....session import Session
 from ....errors import translate_error_code
-from ..future_option_product import FutureOptionProduct
+from ..common.future_option_product import FutureOptionProduct
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table

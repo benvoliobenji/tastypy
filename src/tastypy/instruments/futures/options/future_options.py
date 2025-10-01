@@ -4,7 +4,7 @@ from rich.table import Table
 
 from ....errors import translate_error_code
 from ....session import Session
-from ..future_option import FutureOption
+from ..common.future_option import FutureOption
 
 
 class FutureOptions:

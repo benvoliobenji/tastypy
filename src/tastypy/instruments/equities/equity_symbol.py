@@ -1,4 +1,4 @@
-from .equity import Equity
+from .common.equity import Equity
 from ...session import Session
 from ...errors import translate_error_code
 

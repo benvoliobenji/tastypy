@@ -4,7 +4,7 @@ from rich.table import Table
 
 from ...errors import translate_error_code
 from ...session import Session
-from .equity import Equity, Lendability
+from .common.equity import Equity, Lendability
 
 
 class ActiveEquities:
