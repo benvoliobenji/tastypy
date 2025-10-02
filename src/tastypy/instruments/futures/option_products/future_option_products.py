@@ -1,6 +1,7 @@
 from ....session import Session
 from ....errors import translate_error_code
 from ..common.future_option_product import FutureOptionProduct
+from ..common.exchanges import Exchange
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
@@ -14,10 +15,10 @@ class FutureOptionProducts:
     def __init__(self, active_session: Session):
         self._session = active_session
 
-    def sync(self, exchange: str, root_symbol: str):
+    def sync(self, exchange: Exchange, root_symbol: str):
         """Fetch the latest data for future option products."""
         self._endpoint_url = (
-            f"/instruments/future-option-products/{exchange}/{root_symbol}"
+            f"/instruments/future-option-products/{exchange.value}/{root_symbol}"
         )
 
         response = self._session._client.get(
