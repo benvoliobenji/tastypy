@@ -75,6 +75,16 @@ class InternalServerError(Exception):
         super().__init__(self.message)
 
 
+class ServiceUnavailableError(Exception):
+    """Exception raised when service is temporarily unavailable."""
+
+    code = 503
+
+    def __init__(self, message):
+        self.message = f"Code: {self.code} -  Service temporarily unavailable (endpoint may not be available in this environment or there's a temporary outage) {message}"
+        super().__init__(self.message)
+
+
 __all_errors = {
     400: InvalidRequestError,
     401: AuthorizationExpiredError,
@@ -83,6 +93,7 @@ __all_errors = {
     422: UnprocessableContentError,
     429: TooManyRequestsError,
     500: InternalServerError,
+    503: ServiceUnavailableError,
 }
 
 

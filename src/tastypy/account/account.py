@@ -10,6 +10,7 @@ from ..session import Session
 from .trading_status import TradingStatus
 from .balance import Balance
 from .positions import Positions
+from .margin import MarginRequirements, MarginRequirementsDryRun
 
 
 class Account:
@@ -201,6 +202,52 @@ class Account:
         if not hasattr(self, "_positions"):
             self._positions = Positions(self.account_number, self._active_session)
         return self._positions
+
+    @property
+    def margin_requirements(self) -> MarginRequirements:
+        """Get margin requirements manager for this account.
+
+        Returns:
+            MarginRequirements: Object to fetch current margin/capital requirements
+
+        Example:
+            >>> account.margin_requirements.sync()
+            >>> print(account.margin_requirements.margin_requirement)
+        """
+        if not self.account_number:
+            raise ValueError("Account number is not set.")
+        if not hasattr(self, "_margin_requirements"):
+            self._margin_requirements = MarginRequirements(
+                self.account_number, self._active_session
+            )
+        return self._margin_requirements
+
+    @property
+    def margin_requirements_dry_run(self) -> MarginRequirementsDryRun:
+        """Get margin requirements dry-run estimator for this account.
+
+        Returns:
+            MarginRequirementsDryRun: Object to estimate margin requirements for orders
+
+        Example:
+            >>> dry_run = account.margin_requirements_dry_run
+            >>> dry_run.estimate(
+            ...     underlying_symbol="AAPL",
+            ...     order_type="Limit",
+            ...     time_in_force="Day",
+            ...     legs=[{"symbol": "AAPL", "instrument-type": "Equity", "action": "Buy to Open", "quantity": "100"}],
+            ...     price="150.00",
+            ...     price_effect="Debit"
+            ... )
+            >>> print(dry_run.margin_requirement)
+        """
+        if not self.account_number:
+            raise ValueError("Account number is not set.")
+        if not hasattr(self, "_margin_requirements_dry_run"):
+            self._margin_requirements_dry_run = MarginRequirementsDryRun(
+                self.account_number, self._active_session
+            )
+        return self._margin_requirements_dry_run
 
     def pretty_print(self) -> None:
         """Pretty print all account data in a nicely formatted table."""

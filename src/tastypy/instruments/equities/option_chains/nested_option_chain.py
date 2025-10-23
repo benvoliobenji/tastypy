@@ -267,9 +267,11 @@ class NestedOptionChain:
 
                 overview_table.add_row(
                     str(i + 1),
-                    str(expiration.expiration_date)
-                    if expiration.expiration_date
-                    else "N/A",
+                    (
+                        str(expiration.expiration_date)
+                        if expiration.expiration_date
+                        else "N/A"
+                    ),
                     str(expiration.days_to_expiration),
                     str(expiration.expiration_type),
                     str(strike_count) if strike_count > 0 else "0",
