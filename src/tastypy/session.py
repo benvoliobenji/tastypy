@@ -127,6 +127,10 @@ class Session:
             self.login()
         return self._client
 
+    def is_sandbox(self) -> bool:
+        """Check if the session is connected to the sandbox environment."""
+        return "cert.tastyworks.com" in self._base_url
+
     def __open__(self):
         """Open the session."""
         self.login()
