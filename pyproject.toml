@@ -5,7 +5,11 @@ description = "A thin API wrapper for TastyTrade's open API"
 readme = "README.md"
 authors = [{ name = "Benjamin Vogel", email = "ben10vogel@gmail.com" }]
 requires-python = ">=3.12"
-dependencies = ["httpx>=0.28.1", "rich>=14.1.0"]
+dependencies = [
+    "httpx>=0.28.1",
+    "pytz>=2025.2",
+    "rich>=14.1.0",
+]
 
 [project.optional-dependencies]
 build = ["uv ~= 0.7.11"]

@@ -11,6 +11,7 @@ from .trading_status import TradingStatus
 from .balance import Balance
 from .positions import Positions
 from .margin import MarginRequirements, MarginRequirementsDryRun
+from .net_liq_history import NetLiqHistory
 
 
 class Account:
@@ -248,6 +249,26 @@ class Account:
                 self.account_number, self._active_session
             )
         return self._margin_requirements_dry_run
+
+    @property
+    def net_liq_history(self) -> NetLiqHistory:
+        """Get net liquidating value history for this account.
+
+        Returns:
+            NetLiqHistory: Object to fetch historical net liq data
+
+        Example:
+            >>> from tastypy.account import TimeBack
+            >>> account.net_liq_history.sync(time_back=TimeBack.ONE_WEEK)
+            >>> account.net_liq_history.pretty_print()
+        """
+        if not self.account_number:
+            raise ValueError("Account number is not set.")
+        if not hasattr(self, "_net_liq_history"):
+            self._net_liq_history = NetLiqHistory(
+                self.account_number, self._active_session
+            )
+        return self._net_liq_history
 
     def pretty_print(self) -> None:
         """Pretty print all account data in a nicely formatted table."""

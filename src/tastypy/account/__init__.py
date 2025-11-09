@@ -9,10 +9,20 @@ from .margin import (
     PriceEffect,
 )
 
+# Expose net liq history classes
+from .net_liq_history import (
+    NetLiqHistory,
+    NetLiqHistoryItem,
+    TimeBack,
+)
+
 __all__ = [
     "MarginRequirements",
     "MarginRequirementsDryRun",
     "MarginRequirementLeg",
     "MarginRequirementGroup",
     "PriceEffect",
+    "NetLiqHistory",
+    "NetLiqHistoryItem",
+    "TimeBack",
 ]
