@@ -2,6 +2,32 @@
 
 <!-- version list -->
 
+## v1.4.0 (2025-11-16)
+
+### Features
+
+- **account**: Add margin requirements endpoints
+  ([`19096ab`](https://github.com/benvoliobenji/tastypy/commit/19096abd322b0b3e0d6c8d933ddbfcfb0a6ddd18))
+
+- **account**: Add net liquidating history endpoint
+  ([`dfd6ca2`](https://github.com/benvoliobenji/tastypy/commit/dfd6ca20b4c6b4d94d6262beb9880176a4eb21cc))
+
+- **market-data**: Add market data (by type) endpoint
+  ([`33f7e14`](https://github.com/benvoliobenji/tastypy/commit/33f7e144f5a160df7ab44f707c342886c410a728))
+
+- **market-metrics**: Add market metrics endpoints
+  ([`0720dcf`](https://github.com/benvoliobenji/tastypy/commit/0720dcf89761967f05552b7216ea0c083bb31a97))
+
+- **market-sessions**: Add market sessions endpoints
+  ([`e5ebbfc`](https://github.com/benvoliobenji/tastypy/commit/e5ebbfc5958863b34f88f0054452428bbabe5676))
+
+- **orders**: Add common order templates
+  ([`f978c76`](https://github.com/benvoliobenji/tastypy/commit/f978c760b43fb2c5d4db7f2aa7b9f6ca972696ac))
+
+- **orders**: Add complex, simple orders endpoint
+  ([`4d464a4`](https://github.com/benvoliobenji/tastypy/commit/4d464a4d0d3de9395785053824aa07c6b199c497))
+
+
 ## v1.3.0 (2025-10-15)
 
 ### Features
