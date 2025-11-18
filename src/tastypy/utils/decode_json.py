@@ -19,6 +19,24 @@ def parse_float(value: float | str | None, default: float = 0.0) -> float:
     return default
 
 
+def parse_int(value: int | str | None, default: int = 0) -> int:
+    """Parse an integer value from API response with fallback.
+
+    Args:
+        value: Value from API that might be int, str, or None
+        default: Default value to return if parsing fails
+
+    Returns:
+        Parsed int or default value
+    """
+    if value is not None:
+        try:
+            return int(value)
+        except (ValueError, TypeError):
+            return default
+    return default
+
+
 def parse_datetime(value: str | None) -> datetime.datetime | None:
     """Parse a datetime from ISO 8601 string.
 

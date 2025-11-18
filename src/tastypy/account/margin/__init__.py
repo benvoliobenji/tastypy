@@ -9,6 +9,8 @@ from .margin_dry_run import MarginRequirementsDryRun
 from .margin_order_leg import MarginRequirementLeg
 from .margin_group import MarginRequirementGroup
 from .margin_types import PriceEffect
+from .effective_margin_requirement import EffectiveMarginRequirement
+from .public_margin_configuration import PublicMarginConfiguration
 
 __all__ = [
     "MarginRequirements",
@@ -16,4 +18,6 @@ __all__ = [
     "MarginRequirementLeg",
     "MarginRequirementGroup",
     "PriceEffect",
+    "EffectiveMarginRequirement",
+    "PublicMarginConfiguration",
 ]
