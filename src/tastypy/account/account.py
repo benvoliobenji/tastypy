@@ -22,9 +22,7 @@ class Account:
     _current_balance: Balance
 
     def __init__(self, active_session: Session, customer_id: str, account_number: str):
-        if not active_session.is_logged_in():
-            raise ValueError("Session is not logged in.")
-        elif not account_number:
+        if not account_number:
             raise ValueError("Account number is required.")
         self._active_session = active_session
         self._session_client = active_session.client

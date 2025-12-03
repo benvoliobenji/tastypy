@@ -21,10 +21,8 @@ class Customer:
     _active_session: Session
 
     def __init__(self, active_session: Session):
-        if not active_session.is_logged_in():
-            raise ValueError("Session is not logged in.")
-        self._session_client = active_session.client
         self._active_session = active_session
+        self._session_client = active_session.client
 
     def sync(self):
         """
