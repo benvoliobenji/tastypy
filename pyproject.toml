@@ -1,6 +1,6 @@
 [project]
 name = "tastypy"
-version = "1.4.0"
+version = "2.0.0"
 description = "A thin API wrapper for TastyTrade's open API"
 readme = "README.md"
 authors = [{ name = "Benjamin Vogel", email = "ben10vogel@gmail.com" }]

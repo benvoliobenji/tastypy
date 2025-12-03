@@ -2,6 +2,34 @@
 
 <!-- version list -->
 
+## v2.0.0 (2025-12-02)
+
+### Features
+
+- **account**: Add transactions endpoint
+  ([`10af07c`](https://github.com/benvoliobenji/tastypy/commit/10af07cdbb2522dcd81c293ff6fa3dfc4867eeeb))
+
+- **margin**: Add margin requirements and position limit endpoints
+  ([`33b8845`](https://github.com/benvoliobenji/tastypy/commit/33b88454e669109311b5b96a30c1dba81b984ee5))
+
+- **quote-alerts**: Add quote alerts endpoint
+  ([`8e48e8d`](https://github.com/benvoliobenji/tastypy/commit/8e48e8d406ad8ea0e9e20fb3a88205edc08707cc))
+
+- **search**: Add symbol searching
+  ([`71e2a86`](https://github.com/benvoliobenji/tastypy/commit/71e2a86f48db61900c51e05a00ac8c8be27a3db7))
+
+- **session**: Move session to OAuth rather than username/password
+  ([`4b914a1`](https://github.com/benvoliobenji/tastypy/commit/4b914a1cfa6b34dda4010bcf0f2676372945dacc))
+
+- **watchlists**: Add watchlists endpoint
+  ([`91ffbac`](https://github.com/benvoliobenji/tastypy/commit/91ffbaca5f19a82e4cdd4b88ea62d178435c227b))
+
+### Breaking Changes
+
+- **session**: Username/password login is no longer supported, and the Session class has had its API
+  reworked to support the new OAuth login structure. Follow the REAME for migration strategies
+
+
 ## v1.4.0 (2025-11-16)
 
 ### Features
