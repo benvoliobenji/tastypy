@@ -23,10 +23,6 @@ class CompactOptionChain:
     need to quickly get all option symbols without detailed chain structure.
     """
 
-    _endpoint_url = ""
-    _session: Session
-    _chain_json: dict
-
     def __init__(self, active_session: Session):
         """
         Initialize a CompactOptionChain with a session.

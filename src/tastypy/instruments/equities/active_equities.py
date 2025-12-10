@@ -11,8 +11,6 @@ class ActiveEquities:
     """Endpoint for fetching and managing active equity instruments."""
 
     _url_endpoint = "/instruments/equities/active"
-    _session: Session
-    _active_equities: list[Equity] = []
 
     def __init__(self, active_session: Session):
         self._session = active_session

@@ -10,8 +10,6 @@ class EquityOption:
     Represents an equity option instrument.
     """
 
-    _option_json: dict
-
     def __init__(self, option_json: dict):
         self._option_json = option_json
 

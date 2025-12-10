@@ -18,8 +18,6 @@ class Deliverable:
     but adjusted options may deliver cash, multiple securities, or other instruments.
     """
 
-    _deliverable_json: dict[str, Any]
-
     def __init__(self, deliverable_json: dict[str, Any]):
         """
         Initialize a Deliverable from JSON data.

@@ -27,8 +27,6 @@ class Lendability(enum.Enum):
 class Equity:
     """Represents an equity instrument with various properties."""
 
-    _equity_json: dict
-
     def __init__(self, equity_json: dict):
         self._equity_json = equity_json
 

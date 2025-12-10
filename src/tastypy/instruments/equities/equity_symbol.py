@@ -4,10 +4,6 @@ from ...errors import translate_error_code
 
 
 class EquitySymbol:
-    _endpoint_url = ""
-    _session: Session
-    _equity: Equity
-
     def __init__(self, active_session: Session):
         self._session = active_session
 

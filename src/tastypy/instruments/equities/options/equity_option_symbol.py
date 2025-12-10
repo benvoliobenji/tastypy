@@ -11,10 +11,6 @@ class OptionType(enum.Enum):
 
 
 class EquityOptionSymbol:
-    _endpoint_url = ""
-    _session: Session
-    _equity_option: EquityOption
-
     def __init__(self, active_session: Session):
         self._session = active_session
 

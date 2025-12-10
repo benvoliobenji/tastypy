@@ -16,10 +16,6 @@ class NestedOptionChain:
     allowing you to access strikes and expirations in a structured format.
     """
 
-    _endpoint_url = ""
-    _session: Session
-    _chain_json: dict
-
     def __init__(self, active_session: Session):
         self._session = active_session
 

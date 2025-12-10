@@ -8,8 +8,6 @@ from rich.table import Table
 class NestedOptionChainExpiration:
     """Represents an expiration in a nested equity options chain."""
 
-    _expiration_json: dict
-
     def __init__(self, expiration_json: dict):
         self._expiration_json = expiration_json
 
