@@ -19,6 +19,13 @@ class Future:
 
     def sync(self, symbol: str):
         """Fetch the latest data for the specified future symbol."""
+        if symbol.startswith("/"):
+            # If symbol starts with '/', replace it with %2F for URL encoding
+            symbol = "%2F" + symbol[1:]
+        elif not symbol.startswith("%2F"):
+            # If symbol does not start with '/' or '%2F', prepend '%2F'
+            symbol = "%2F" + symbol
+
         self._endpoint_url = f"/instruments/futures/{symbol}"
 
         response = self._session._client.get(
