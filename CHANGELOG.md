@@ -2,6 +2,20 @@
 
 <!-- version list -->
 
+## v2.1.0 (2025-12-10)
+
+### Features
+
+- **futures**: Add proper importing of futures for consumers
+  ([`bad1124`](https://github.com/benvoliobenji/tastypy/commit/bad11241672f811ea63946a012a6b85f1d44496f))
+
+- **instruments**: Add proper import of equities for consumers
+  ([`cfe0483`](https://github.com/benvoliobenji/tastypy/commit/cfe0483ed60032d9d7279cc1d809cc3eea41718c))
+
+- **streaming**: Add market data streaming
+  ([`901b58a`](https://github.com/benvoliobenji/tastypy/commit/901b58a76688180afec26153a6cc3fc03162f08e))
+
+
 ## v2.0.0 (2025-12-02)
 
 ### Features
