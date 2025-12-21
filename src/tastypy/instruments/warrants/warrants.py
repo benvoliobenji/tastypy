@@ -11,11 +11,10 @@ class Warrants:
     """Endpoint for fetching and managing warrant instruments."""
 
     _url_endpoint = "/instruments/warrants"
-    _session: Session
-    _tracked_warrants: dict[str, Warrant] = {}
 
     def __init__(self, active_session: Session):
         self._session = active_session
+        self._tracked_warrants: dict[str, Warrant] = {}
 
     def add(self, symbol: str):
         """Add a warrant to the tracked list by its symbol."""
@@ -33,7 +32,7 @@ class Warrants:
 
         # Parse this as symbol[]={value1}&symbol[]={value2}
         params = {"symbol[]": list(self._tracked_warrants.keys())}
-        response = self._session._client.get(
+        response = self._session.client.get(
             self._url_endpoint,
             params=params,
         )

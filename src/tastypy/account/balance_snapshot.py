@@ -22,7 +22,7 @@ class TimeOfDaySnapshot(enum.Enum):
 
 
 class BalanceSnapshot:
-    _snapshot_data: dict
+    """Represents a balance snapshot for a Tastyworks account."""
 
     def __init__(self, snapshot_data: dict):
         self._snapshot_data = snapshot_data

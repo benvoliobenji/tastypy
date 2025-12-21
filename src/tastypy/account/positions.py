@@ -25,8 +25,7 @@ class InstrumentType(enum.Enum):
 
 
 class Positions:
-    _url_endpoint = ""
-    _session: Session
+    """Represents the positions in a Tastyworks account."""
 
     def __init__(self, account_number: str, session: Session):
         self._session = session

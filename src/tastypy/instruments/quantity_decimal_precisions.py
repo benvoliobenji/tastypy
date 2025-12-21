@@ -9,16 +9,15 @@ class QuantityDecimalPrecisions:
     """Endpoint for fetching quantity decimal precision data."""
 
     _url_endpoint = "/instruments/quantity-decimal-precisions"
-    _session: Session
-    _data: dict
 
     def __init__(self, active_session: Session):
         self._session = active_session
+        self._data = {}
 
     def sync(self):
         """Fetch the latest quantity decimal precision data."""
         # This reports basically nothing, no idea until I understand how TastyTrade ACTUALLY uses this because their docs don't report anything useful
-        response = self._session._client.get(f"{self._url_endpoint}")
+        response = self._session.client.get(f"{self._url_endpoint}")
         if response.status_code == 200:
             data = response.json()
             self._data = data.get("data", {})

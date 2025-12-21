@@ -20,10 +20,6 @@ class Currency(enum.Enum):
 class Balance:
     """Represents a user's account balance. Note this is different from snapshot as this is the most current values."""
 
-    _url_endpoint = ""
-    _session: Session
-    _currency: Currency = Currency.USD
-
     def __init__(self, account_number: str, active_session: Session):
         self._session = active_session
         self._url_endpoint = f"/accounts/{account_number}/balances"

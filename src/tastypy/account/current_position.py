@@ -5,7 +5,7 @@ from rich.table import Table
 
 
 class CurrentPosition:
-    _position_json: dict
+    """Represents a current position in a Tastyworks account."""
 
     def __init__(self, position_json: dict):
         self._position_json = position_json

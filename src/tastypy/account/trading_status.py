@@ -10,9 +10,6 @@ from ..errors import translate_error_code
 class TradingStatus:
     """Represents the trading status of an account."""
 
-    _session: Session
-    _url_endpoint = ""
-
     def __init__(self, account_number: str, active_session: Session):
         self._session = active_session
         self._url_endpoint = f"/accounts/{account_number}/trading-status"

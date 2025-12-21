@@ -1,6 +1,5 @@
 import datetime
 
-import httpx
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
@@ -16,13 +15,11 @@ from .suitability import Suitability
 
 class Customer:
     _me_url = "/customers/me"
-    _session_client: httpx.Client
-    _accounts: list[Account] = []
-    _active_session: Session
 
     def __init__(self, active_session: Session):
         self._active_session = active_session
         self._session_client = active_session.client
+        self._accounts: list[Account] = []
 
     def sync(self):
         """
@@ -47,13 +44,13 @@ class Customer:
             for account in accounts:
                 account_number = account["account"]["account-number"]
                 # Check if the account already exists in the list
-                if any(acc.account_number == account_number for acc in self.accounts):
+                if any(acc.account_number == account_number for acc in self._accounts):
                     continue
 
                 # If not, create a new Account instance, synchronize, and append it to the list
                 new_account = Account(self._active_session, self.id, account_number)
                 new_account.deep_sync()
-                self.accounts.append(new_account)
+                self._accounts.append(new_account)
         else:
             error_code = response.status_code
             error_message = response.json()["error"]["message"]

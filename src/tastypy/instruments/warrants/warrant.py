@@ -4,7 +4,7 @@ from rich.table import Table
 
 
 class Warrant:
-    _warrant_json: dict = {}
+    """Represents a warrant instrument."""
 
     def __init__(self, warrant_json: dict):
         self._warrant_json = warrant_json
