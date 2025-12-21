@@ -153,6 +153,21 @@ class Session:
 
         return self._client  # type: ignore
 
+    @property
+    def access_token(self) -> str:
+        """
+        Get the current access token.
+
+        Automatically refreshes the token if expired or not yet obtained.
+
+        Returns:
+            The current access token string.
+        """
+        if not self.is_logged_in():
+            self.refresh()
+
+        return self._access_token
+
     def is_sandbox(self) -> bool:
         """
         Check if the session is connected to the sandbox environment.

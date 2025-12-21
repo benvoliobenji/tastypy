@@ -1,13 +1,19 @@
 """
-Streaming market data module for TastyTrade.
+Streaming data module for TastyTrade.
 
-This module provides real-time market data streaming via DXLink WebSocket protocol.
-It supports multiple event types (Quote, Trade, Greeks, Candles, etc.) and runs
-in a background thread to avoid blocking your application.
+This module provides real-time streaming for both market data and account updates.
 
-Example:
+Market Data Streaming (via DXLink WebSocket protocol):
+    Supports multiple event types (Quote, Trade, Greeks, Candles, etc.) for real-time
+    market data. Runs in a background thread to avoid blocking your application.
+
+Account Data Streaming:
+    Provides real-time notifications for orders, balances, positions, quote alerts,
+    and watchlist updates. Also runs in a background thread for non-blocking operation.
+
+Example - Market Data:
     >>> from tastypy import Session
-    >>> from tastypy.streaming.streamers import MarketDataStreamer, EventType
+    >>> from tastypy.streaming import MarketDataStreamer, EventType
     >>>
     >>> session = Session(client_secret="...", refresh_token="...")
     >>> streamer = MarketDataStreamer(session)
@@ -19,50 +25,90 @@ Example:
     >>> streamer.start()
     >>> streamer.wait()  # Keep running
 
+Example - Account Data:
+    >>> from tastypy.streaming import AccountStreamer, AccountEventType
+    >>>
+    >>> session = Session(client_secret="...", refresh_token="...")
+    >>> streamer = AccountStreamer(session)
+    >>>
+    >>> def on_order(event):
+    ...     print(f"Order {event.order_id}: {event.status}")
+    >>>
+    >>> streamer.subscribe(AccountEventType.ORDER, on_order)
+    >>> streamer.start()
+    >>> streamer.subscribe_accounts(["5WT00000"])
+    >>> streamer.wait()  # Keep running
+
 For async applications:
-    >>> from tastypy.streaming.streamers import AsyncMarketDataStreamer, EventType
+    >>> from tastypy.streaming import AsyncMarketDataStreamer, AsyncAccountStreamer
     >>>
     >>> async def main():
     ...     session = Session(client_secret="...", refresh_token="...")
-    ...     async with AsyncMarketDataStreamer(session) as streamer:
-    ...         await streamer.subscribe("AAPL", EventType.QUOTE, on_quote)
+    ...     async with AsyncAccountStreamer(session) as streamer:
+    ...         streamer.subscribe_orders(on_order)
+    ...         await streamer.subscribe_accounts(["5WT00000"])
     ...         await asyncio.sleep(60)  # Stream for 60 seconds
 """
 
-from .channels import DomChannel, FeedChannel, Subscription
-from .connection import DXLinkConnection
-from .enums import (
+from .account import (
+    AccountConnection,
+    AccountEvent,
+    AccountEventType,
+    AccountStreamer,
+    AsyncAccountStreamer,
+    BalanceEvent,
+    ComplexOrderEvent,
+    OrderEvent,
+    PositionEvent,
+    PublicWatchlistsEvent,
+    QuoteAlertEvent,
+    parse_account_event,
+    parse_account_events,
+)
+from .market_data import (
+    AsyncMarketDataStreamer,
     AuthState,
+    CandleEvent,
+    DomChannel,
+    DomConfigMessage,
     DomDataFormat,
+    DomSetupMessage,
+    DomSnapshotMessage,
+    DXLinkConnection,
     EventType,
+    FeedChannel,
     FeedContract,
     FeedDataFormat,
-    MessageType,
-    ServiceType,
-)
-from .events import (
-    CandleEvent,
     GreeksEvent,
+    MarketDataStreamer,
     MarketEvent,
+    MessageType,
     ProfileEvent,
     QuoteEvent,
+    ServiceType,
+    Subscription,
     SummaryEvent,
     TimeAndSaleEvent,
     TradeETHEvent,
     TradeEvent,
 )
-from .messages import (
-    DomConfigMessage,
-    DomSetupMessage,
-    DomSnapshotMessage,
-)
-from .streamers import AsyncMarketDataStreamer, MarketDataStreamer
 
 __all__ = [
     # Main streamer classes
     "MarketDataStreamer",
     "AsyncMarketDataStreamer",
+    "AccountStreamer",
+    "AsyncAccountStreamer",
+    # Account event types
+    "AccountEvent",
+    "OrderEvent",
+    "BalanceEvent",
+    "PositionEvent",
+    "QuoteAlertEvent",
+    "ComplexOrderEvent",
+    "PublicWatchlistsEvent",
     # Enums
+    "AccountEventType",
     "EventType",
     "MessageType",
     "AuthState",
@@ -70,7 +116,7 @@ __all__ = [
     "FeedContract",
     "FeedDataFormat",
     "DomDataFormat",
-    # Event types
+    # Market event types
     "MarketEvent",
     "QuoteEvent",
     "TradeEvent",
@@ -85,8 +131,12 @@ __all__ = [
     "FeedChannel",
     "DomChannel",
     "Subscription",
+    "AccountConnection",
     # DOM message classes
     "DomSetupMessage",
     "DomConfigMessage",
     "DomSnapshotMessage",
+    # Account parsing functions
+    "parse_account_event",
+    "parse_account_events",
 ]
